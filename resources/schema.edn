@@ -1,0 +1,62 @@
+[
+
+ ;; Person - unique internal ultimate user entity
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/email
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Person email"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/first-name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "First name"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/last-name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Last name"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/role
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "User role"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/login
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Login (by Facebook, Twitter, etc)."
+  :db.install/_attribute :db.part/db}
+
+ ;; Role
+ {:db/id #db/id[:db.part/user] :db/ident :role/member}
+
+ ;; Login - claims-based user identity.
+ {:db/id #db/id[:db.part/db]
+  :db/ident :login/realm
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Login realm"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :login/user-id
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "User identitier within the realm"
+  :db.install/_attribute :db.part/db}
+
+ ;; Realm
+ {:db/id #db/id[:db.part/user] :db/ident :realm/facebook}
+ {:db/id #db/id[:db.part/user] :db/ident :realm/twitter}
+ {:db/id #db/id[:db.part/user] :db/ident :realm/vk}
+
+ ]

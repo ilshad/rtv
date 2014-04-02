@@ -1,0 +1,27 @@
+* Frontend API
+  Аутентификация и авторизация: есть сущность "пользователь" и сущность
+  "логин". Один пользователь может иметь много логинов
+  (FB, VK, Twitter и т.д.), сервер это распознает и аутентифицирует
+  его как единого пользователя. 
+
+** Facebook OAuth2
+*** POST /api/facebook/connect
+    Ссылки на документацию:
+    [[https://developers.facebook.com/docs/facebook-login/access-tokens/][Facebook Access Tokens]]
+    [[https://developers.facebook.com/docs/javascript][Facebook JavaScript SDK]]
+
+    Назначение: отдать токен доступа и фейсбуковский идентификатор
+    пользователя.
+
+    Описание: для логина с Facebook используем Facebook JavaScript SDK.
+    После получения response.status == 'connected', отсылаем полученный
+    access_token и user_id на наш сервер.
+
+**** TODO ? token exchange workflow :: sync / async
+**** request
+- body :: JSON
+- JSON fields :: "access_token", "user_id"
+**** response
+- status :: 200 OK
+- body :: JSON
+- JSON fields :: "" # TODO user info
