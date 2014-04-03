@@ -1,9 +1,11 @@
 (ns user
   (:require [clojure.repl :refer :all]
-            [com.stuartsierra.component :as component]
+            [com.stuartsierra.component :as c]
             [clojure.tools.namespace.repl :as namespace-repl]
             [environ.core :refer [env]]
-            [rtv.system :as system]))
+            [datomic.api :as d]
+            [rtv.system :as system]
+            [rtv.db :as db]))
 
 (def sys nil)
 
@@ -11,10 +13,10 @@
 
 (defn go []
   (alter-var-root #'sys (constantly (system/system conf)))
-  (alter-var-root #'sys component/start))
+  (alter-var-root #'sys c/start))
 
 (defn stop []
-  (alter-var-root #'sys (fn [s] (when s (component/stop s)))))
+  (alter-var-root #'sys (fn [s] (when s (c/stop s)))))
 
 (defn reset []
   (stop)

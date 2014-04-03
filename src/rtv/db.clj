@@ -85,11 +85,22 @@
                                  [:db/add id :login/user-id user-id]])
         (tx-id id))))
 
-(defn add-person [db email first-name last-name login-entity-id]
+(defn add-person [db email first-name last-name roles login-entity-id]
   (let [id (d/tempid :db.part/user)]
     (-> @(d/transact (:conn db) [{:db/id id
                                   :person/email email
                                   :person/first-name first-name
                                   :person/last-name last-name
+                                  :person/role roles
                                   :person/login login-entity-id}])
         (tx-entity id))))
+
+;; These functions are used in debug only
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn all-users [db]
+  (d/q '[:find ?c
+         :in $
+         :where
+         [?c :person/email]]
+       (d/db (:conn db))))

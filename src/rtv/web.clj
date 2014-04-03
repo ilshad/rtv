@@ -37,7 +37,9 @@
   (start [this]
     (let [handler (make-handler db facebook-cfg)
           server (run-jetty handler {:port port :join? false})]
-      (assoc this :http-server server)))
+      (assoc this
+        :handler handler
+        :http-server server)))
   
   (stop [this]
     (.stop (:http-server this))))

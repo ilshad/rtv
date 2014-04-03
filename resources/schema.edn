@@ -37,7 +37,7 @@
   :db.install/_attribute :db.part/db}
 
  ;; Role
- {:db/id #db/id[:db.part/user] :db/ident :role/member}
+ {:db/id #db/id[:db.part/user] :db/ident :person.role/member}
 
  ;; Login - claims-based user identity.
  {:db/id #db/id[:db.part/db]
@@ -55,8 +55,8 @@
   :db.install/_attribute :db.part/db}
 
  ;; Realm
- {:db/id #db/id[:db.part/user] :db/ident :realm/facebook}
- {:db/id #db/id[:db.part/user] :db/ident :realm/twitter}
- {:db/id #db/id[:db.part/user] :db/ident :realm/vk}
+ {:db/id #db/id[:db.part/user] :db/ident :login.realm/facebook}
+ {:db/id #db/id[:db.part/user] :db/ident :login.realm/twitter}
+ {:db/id #db/id[:db.part/user] :db/ident :login.realm/vk}
 
  ]

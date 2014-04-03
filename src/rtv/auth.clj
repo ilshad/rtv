@@ -12,12 +12,12 @@
         (update :person/last-name last-name)
         person)
       ;; new login, new person
-      (let [login-eid (db/add-login db :realm/facebook user-id)]
-        (db/add-person db email first-name last-name login-eid)))))
+      (let [login-eid (db/add-login db realm user-id)
+            roles [:person.role/member]]
+        (db/add-person db email first-name last-name roles login-eid)))))
 
 (defn- authentication-map [person]
-  {:identity (:db/id person)
-   :roles (:person/role person)})
+  {:identity (:db/id person) :roles (:person/role person)})
 
 (defn credential-fn [db]
   (fn [creds]
