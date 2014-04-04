@@ -59,4 +59,69 @@
  {:db/id #db/id[:db.part/user] :db/ident :login.realm/twitter}
  {:db/id #db/id[:db.part/user] :db/ident :login.realm/vk}
 
+ ;; Video
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/owner
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Owner - ref to person"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/created
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Date and time of creation"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/uri
+  :db/valueType :db.type/uri
+  :db/cardinality :db.cardinality/one
+  :db/doc "Video's URL"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Video's title"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/sport
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Ref to sport"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/tag
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Ref to tag"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/like
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Like - ref to person"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/unlike
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Unlike - ref to person"
+  :db.install/_attribute :db.part/db}
+
+ ;; Sport
+ {:db/id #db/id[:db.part/db]
+  :db/ident :sport/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Sport's dispalay name"
+  :db.install/_attribute :db.part/db}
+
  ]
