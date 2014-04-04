@@ -9,7 +9,8 @@
 
 (def sys nil)
 
-(def conf (select-keys env [:datomic-uri :http-server-port :facebook]))
+(def conf (select-keys env [:datomic-uri :http-server-port
+                            :facebook :aws]))
 
 (defn go []
   (alter-var-root #'sys (constantly (system/system conf)))

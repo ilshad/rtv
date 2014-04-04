@@ -9,19 +9,23 @@
             [com.stuartsierra.component :as c]
             [cemerick.friend :as friend]
             [rtv.facebook :as facebook]
+            [rtv.upload :as upload]
             [rtv.auth :as auth]))
 
 (defroutes routes
   (GET "/" req (str (-> req :db :uri)))
+  (GET "/sign-s3-put" req (upload/sign-s3-put req))
   (route/not-found "Page not found"))
 
-(defn- wrap-components [handler db]
+(defn- wrap-components [handler db aws]
   (fn [req]
-    (handler (assoc req :db db))))
+    (handler (assoc req
+               :db db
+               :aws aws))))
 
-(defn- make-handler [db facebook-cfg]
+(defn- make-handler [db facebook-cfg aws-cfg]
   (-> #'routes
-      (wrap-components db)
+      (wrap-components db aws-cfg)
       (friend/authenticate
        {:credential-fn (auth/credential-fn db)
         :workflows [(facebook/workflow facebook-cfg)]})
@@ -31,11 +35,11 @@
       (wrap-resource "public")
       wrap-content-type))
 
-(defrecord HTTPServer [port facebook-cfg db http-server]
+(defrecord HTTPServer [port facebook-cfg aws-cfg db http-server]
   c/Lifecycle
 
   (start [this]
-    (let [handler (make-handler db facebook-cfg)
+    (let [handler (make-handler db facebook-cfg aws-cfg)
           server (run-jetty handler {:port port :join? false})]
       (assoc this
         :handler handler
@@ -44,5 +48,7 @@
   (stop [this]
     (.stop (:http-server this))))
 
-(defn web-component [port facebook-cfg]
-  (map->HTTPServer {:port port :facebook-cfg facebook-cfg}))
+(defn web-component [port facebook-cfg aws-cfg]
+  (map->HTTPServer {:port port
+                    :facebook-cfg facebook-cfg
+                    :aws-cfg aws-cfg}))

@@ -8,5 +8,6 @@
      :db (db/db-component (:datomic-uri conf))
      :web (c/using
            (web/web-component (:http-server-port conf)
-                              (:facebook conf))
+                              (:facebook conf)
+                              (:aws conf))
            [:db])))

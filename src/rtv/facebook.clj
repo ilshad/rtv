@@ -29,11 +29,10 @@
 (defn workflow
   "Workflow for cemerick/friend implementing claims-based identity."
   [cfg]
-  (fn [req]
+  (fn [{params :params :as req}]
     (if (connect-request? req)
-      (if-let [user (verify-token (-> req :params :user_id)
-                                  (-> req :params :access_token))]
+      (if-let [user (verify-token (:user_id params) (:access_token params))]
         (let [cred-fn (-> req :cemerick.friend/auth-config :credential-fn)]
           (cred-fn (assoc user
                      :realm :login.realm/facebook
-                     :user-id (-> req :params :user_id))))))))
+                     :user-id (:user_id params))))))))

@@ -11,8 +11,9 @@
                  [cheshire "5.3.1"]
                  [com.cemerick/friend "0.2.0"]
                  [ring/ring-json "0.2.0"]
-                 [amazonica "0.2.11"]
-                 [clj-http-lite "0.2.0"]]
+                 [clj-time "0.6.0"]
+                 [clj-http-lite "0.2.0"]
+                 [org.clojure/data.codec "0.1.0"]]
   :plugins [[lein-environ "0.4.0"]]
   :profiles {:dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "0.2.4"]]
@@ -20,6 +21,7 @@
                          :http-server-port 7777
                          :facebook {:client-id "123"
                                     :client-secret "xxx"}
-                         :aws {:access-key "foo"
-                               :secret-key "bar"
-                               :endpoint "http://localhost:4567"}}}})
+                         :aws {:s3-url "xxx.com"
+                               :s3-bucket-name "foo"
+                               :s3-access-key "bar"
+                               :s3-secret-key "baz"}}}})
