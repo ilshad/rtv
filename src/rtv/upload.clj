@@ -11,21 +11,24 @@
          "\n/" bucket-name
          "/" s3-object-name)))
 
-(defn sign-s3-put [{params :params conf :aws}]
-  (let [object-name (:s3-object-name params)
-        object-type (:s3-object-type params)
-        bucket-name (:s3-bucket-name conf)
-        secret-key (:s3-secret-key conf)
-        s3-url (:s3-url conf)
-        access-key (:s3-access-key conf)
-        expires (-> 100 time/seconds time/from-now)
-        raw (string-to-sign bucket-name object-name object-type expires)
-        sig (util/b64-encode-string (util/hex-hmac-sha1 secret-key raw))
-        signed-request (str s3-url "/" bucket-name "/" object-name
-                            "?AWSAccessKeyId=" access-key
-                            "&Expires=" expires
-                            "&Signature" sig)
-        url (str "http://s3.amazonaws.com/" bucket-name "/" object-type)]
+(defn sign-s3-put
+  "Params: :s3-object-name, :s3-object-type, :s3-bucket-name.
+   Conf: :s3-secret-key, :s3-url, :s3-access-key."
+  [{params :params conf :aws}]
+  (let [expires (-> 100 time/seconds time/from-now)
+        raw (string-to-sign (:s3-bucket-name conf)
+                            (:s3-object-name params)
+                            (:s3-object-type params)
+                            expires)
+        sig (util/b64-encode-string
+             (util/hex-hmac-sha1 (:s3-secret-key conf) raw))]
     (response/response
-     {:signed_request signed-request
-      :url url})))
+     {:signed_request (str (:s3-url conf) "/"
+                           (:s3-bucket-name conf) "/"
+                           (:s3-object-name params)
+                           "?AWSAccessKeyId=" (:s3-access-key conf)
+                           "&Expires=" expires
+                           "&Signature" sig)
+      :url (str "http://s3.amazonaws.com/"
+                (:s3-bucket-name conf) "/"
+                (:s3-object-type params))})))

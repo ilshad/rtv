@@ -2,7 +2,7 @@
 
 var s3upload = s3upload != null ? s3upload : new S3Upload({
     file_dom_selector: '#files',
-    s3_sign_put_url: '/sign-s3-put',
+    s3_sign_put_url: '/api/sign-s3-put',
     onProgress: function(percent, message) { // Use this for live upload progress bars
 	console.log('Upload progress: ', percent, message);
     },
@@ -19,11 +19,9 @@ var s3upload = s3upload != null ? s3upload : new S3Upload({
     
     window.S3Upload = (function() {
 	
-	S3Upload.prototype.s3_object_name = 'default_name';
-	
-	S3Upload.prototype.s3_sign_put_url = '/signS3put';
-	
-	S3Upload.prototype.file_dom_selector = 'file_upload';
+	S3Upload.prototype.s3_object_name = 'default_name';	
+	S3Upload.prototype.s3_sign_put_url = '/api/sign-s3-put';
+	S3Upload.prototype.file_dom_selector = '#files';
 	
 	S3Upload.prototype.onFinishS3Put = function(public_url) {
 	    return console.log('base.onFinishS3Put()', public_url);

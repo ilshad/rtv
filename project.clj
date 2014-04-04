@@ -21,7 +21,7 @@
                          :http-server-port 7777
                          :facebook {:client-id "123"
                                     :client-secret "xxx"}
-                         :aws {:s3-url "xxx.com"
+                         :aws {:s3-url "http://xxx.com"
                                :s3-bucket-name "foo"
                                :s3-access-key "bar"
                                :s3-secret-key "baz"}}}})

@@ -8,28 +8,30 @@
             [ring.adapter.jetty :refer [run-jetty]]
             [com.stuartsierra.component :as c]
             [cemerick.friend :as friend]
+            [rtv.frontend-config :as frontend-config]
             [rtv.facebook :as facebook]
             [rtv.upload :as upload]
             [rtv.auth :as auth]))
 
 (defroutes routes
   (GET "/" req (str (-> req :db :uri)))
-  (GET "/api/frontend-config" _ "")
+  (GET "/api/frontend-config" req (frontend-config/handler req))
   (GET "/api/sign-s3-put" req (upload/sign-s3-put req))
   (route/not-found "Page not found"))
 
-(defn- wrap-components [handler db aws]
+(defn- wrap-components [handler db facebook aws]
   (fn [req]
     (handler (assoc req
                :db db
+               :facebook facebook
                :aws aws))))
 
 (defn- make-handler [db facebook-cfg aws-cfg]
   (-> #'routes
-      (wrap-components db aws-cfg)
+      (wrap-components db facebook-cfg aws-cfg)
       (friend/authenticate
        {:credential-fn (auth/credential-fn db)
-        :workflows [(facebook/workflow facebook-cfg)]})
+        :workflows [facebook/workflow]})
       site
       ring-json/wrap-json-params
       ring-json/wrap-json-response
