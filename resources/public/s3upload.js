@@ -2,12 +2,13 @@
 
 var s3upload = s3upload != null ? s3upload : new S3Upload({
     file_dom_selector: '#files',
-    s3_sign_put_url: '/api/sign-s3-put',
+    s3_sign_put_url: '/api/s3-put-sign',
     onProgress: function(percent, message) { // Use this for live upload progress bars
 	console.log('Upload progress: ', percent, message);
     },
-    onFinishS3Put: function(public_url) { // Get the URL of the uploaded file
-	console.log('Upload finished: ', public_url);
+    onFinishS3Put: function(result_url) { // Get the URL of the uploaded file
+	console.log('Upload finished: ', result_url);
+	;; send result_url to RevertTV server
     },
     onError: function(status) {
 	console.log('Upload error: ', status);
@@ -19,12 +20,12 @@ var s3upload = s3upload != null ? s3upload : new S3Upload({
     
     window.S3Upload = (function() {
 	
-	S3Upload.prototype.s3_object_name = 'default_name';	
-	S3Upload.prototype.s3_sign_put_url = '/api/sign-s3-put';
+	S3Upload.prototype.s3_object_name = 'default_name';
+	S3Upload.prototype.s3_sign_put_url = '/api/s3-put-sign';
 	S3Upload.prototype.file_dom_selector = '#files';
 	
-	S3Upload.prototype.onFinishS3Put = function(public_url) {
-	    return console.log('base.onFinishS3Put()', public_url);
+	S3Upload.prototype.onFinishS3Put = function(result_url) {
+	    return console.log('base.onFinishS3Put()', result_url);
 	};
 	
 	S3Upload.prototype.onProgress = function(percent, status) {
@@ -93,7 +94,7 @@ var s3upload = s3upload != null ? s3upload : new S3Upload({
 	    return xhr.send();
 	};
 	
-	S3Upload.prototype.uploadToS3 = function(file, url, public_url) {
+	S3Upload.prototype.uploadToS3 = function(file, url, result_url) {
 	    var this_s3upload, xhr;
 	    this_s3upload = this;
 	    xhr = this.createCORSRequest('PUT', url);
@@ -103,7 +104,7 @@ var s3upload = s3upload != null ? s3upload : new S3Upload({
 		xhr.onload = function() {
 		    if (xhr.status === 200) {
 			this_s3upload.onProgress(100, 'Upload completed.');
-			return this_s3upload.onFinishS3Put(public_url);
+			return this_s3upload.onFinishS3Put(result_url);
 		    } else {
 			return this_s3upload.onError('Upload error: ' + xhr.status);
 		    }

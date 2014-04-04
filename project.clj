@@ -1,5 +1,6 @@
 (defproject rtv "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.5.1"]
+                 [org.clojure/core.async "0.1.278.0-76b25b-alpha"]
                  [com.datomic/datomic-pro "0.9.4572"]
                  [com.stuartsierra/component "0.2.1"]
                  [com.draines/postal "1.11.1"]

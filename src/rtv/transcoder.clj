@@ -1,6 +1,10 @@
 (ns rtv.transcoder
-  (:require [rtv.db :as db]
-            [rtv.util :as util]))
+  (:require [clojure.core.async :refer [go <! >! chan]]
+            [rtv.util :as util]
+            [rtv.db :as db]))
+
+(defn start-task [person-eid file-url]
+  "/xyz")
 
 (defn create-callback
   "Return tuple: callback URI and callback ring handler."

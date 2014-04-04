@@ -1,6 +1,8 @@
 (ns rtv.upload
-  (:require [ring.util.response :as response]
+  (:require [ring.util.response :as ring-resp]
+            [cemerick.friend :as friend]
             [clj-time.core :as time]
+            [rtv.transcoder :as transcoder]
             [rtv.util :as util]))
 
 (defn- string-to-sign [bucket-name s3-object-name s3-object-type expires]
@@ -11,24 +13,33 @@
          "\n/" bucket-name
          "/" s3-object-name)))
 
-(defn sign-s3-put
-  "Params: :s3-object-name, :s3-object-type, :s3-bucket-name.
-   Conf: :s3-secret-key, :s3-url, :s3-access-key."
+(defn s3-put-sign
+  "Request spec for this ring handler:
+   - params: :s3_object_name, :s3_object_type.
+   - conf: :s3-bucket-name, :s3-url, :s3-secret-key, :s3-access-key."
   [{params :params conf :aws}]
   (let [expires (-> 100 time/seconds time/from-now)
         raw (string-to-sign (:s3-bucket-name conf)
-                            (:s3-object-name params)
-                            (:s3-object-type params)
+                            (:s3_object_name params)
+                            (:s3_object_type params)
                             expires)
         sig (util/b64-encode-string
              (util/hex-hmac-sha1 (:s3-secret-key conf) raw))]
-    (response/response
+    (ring-resp/response
      {:signed_request (str (:s3-url conf) "/"
                            (:s3-bucket-name conf) "/"
-                           (:s3-object-name params)
+                           (:s3_object_name params)
                            "?AWSAccessKeyId=" (:s3-access-key conf)
                            "&Expires=" expires
                            "&Signature" sig)
       :url (str "http://s3.amazonaws.com/"
                 (:s3-bucket-name conf) "/"
-                (:s3-object-type params))})))
+                (:s3_object_type params))})))
+
+(defn s3-put-done
+  "Request spec for this ring handler:
+   - params: :result_url"
+  [{params :params :as req}]
+  (let [user (friend/current-authentication req)
+        url (transcoder/start-task (:identity user) (:result_url params))]
+    (ring-resp/redirect url)))

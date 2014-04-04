@@ -16,7 +16,8 @@
 (defroutes routes
   (GET "/" req (str (-> req :db :uri)))
   (GET "/api/frontend-config" req (frontend-config/handler req))
-  (GET "/api/sign-s3-put" req (upload/sign-s3-put req))
+  (GET "/api/s3-put-sign" req (upload/s3-put-sign req))
+  (GET "/api/s3-put-done" req (upload/s3-put-done req))
   (route/not-found "Page not found"))
 
 (defn- wrap-components [handler db facebook aws]
