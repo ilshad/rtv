@@ -76,15 +76,16 @@
 
  {:db/id #db/id[:db.part/db]
   :db/ident :video/uri
-  :db/valueType :db.type/uri
+  :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
-  :db/doc "Video's URL"
+  :db/doc "Video's URI"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
   :db/ident :video/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
+  :db/fulltext true
   :db/doc "Video's title"
   :db.install/_attribute :db.part/db}
 
@@ -97,9 +98,9 @@
 
  {:db/id #db/id[:db.part/db]
   :db/ident :video/tag
-  :db/valueType :db.type/ref
+  :db/valueType :db.type/string
   :db/cardinality :db.cardinality/many
-  :db/doc "Ref to tag"
+  :db/doc "Tag"
   :db.install/_attribute :db.part/db}
 
  {:db/id #db/id[:db.part/db]
@@ -116,12 +117,35 @@
   :db/doc "Unlike - ref to person"
   :db.install/_attribute :db.part/db}
 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :video/trick
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Ref to trick instance"
+  :db.install/_attribute :db.part/db}
+
  ;; Sport
  {:db/id #db/id[:db.part/db]
   :db/ident :sport/title
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Sport's dispalay name"
+  :db.install/_attribute :db.part/db}
+
+ ;; Trick
+ {:db/id #db/id[:db.part/db]
+  :db/ident :trick/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/fulltext true
+  :db/doc "Trick title"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :trick/start
+  :db/valueType :db.type/long
+  :db/cardinality :db.cardinality/one
+  :db/doc "Trick's start position in video, in milliseconds"
   :db.install/_attribute :db.part/db}
 
  ]

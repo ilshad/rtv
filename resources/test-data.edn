@@ -1,0 +1,49 @@
+[
+
+ ;; Dude-1: Tom Wallisch
+ {:db/id #db/id[:db.part/user -1000001]
+  :person/email "tom.wallisch@gmail.com"
+  :person/first-name "Tom"
+  :person/last-name "Wallisch"
+  :person/role [:person.role/member]}
+
+ {:db/id #db/id[:db.part/user -2000001]
+  :person/_login #db/id[:db.part/user -1000001]
+  :login/realm :login.realm/facebook
+  :login/user-id "123456789"}
+
+ ;; Dude-2: Frodo Baggins
+ {:db/id #db/id[:db.part/user -1000002]
+  :person/email "frodo.baggins@gmail.com"
+  :person/first-name "Frodo"
+  :person/last-name "Baggins"
+  :person/role [:person.role/member]}
+
+ {:db/id #db/id[:db.part/user -2000002]
+  :person/_login #db/id[:db.part/user -1000002]
+  :login/realm :login.realm/facebook
+  :login/user-id "321654987"}
+
+ ;; Sport
+ {:db/id #db/id[:db.part/user -3000001] :sport/title "Ski"}
+
+ ;; Video-1
+ {:db/id #db/id[:db.part/user -4000001]
+  :video/owner #db/id[:db.part/user -1000001]
+  :video/created #inst "2012-09-11T11:51:26.000-00:00"
+  :video/uri "https://rvtvbucket.s3.amazonaws.com/video-1.mp4"
+  :video/title "Tom Wallisch's Skier's Discretion - The 2014 Season"
+  :video/sport #db/id[:db.part/user -3000001]
+  :video/tag ["ski" "tomwallisch"]}
+
+ ;; Frodo likes it
+ [:db/add       #db/id[:db.part/user -4000001]
+  :video/like   #db/id[:db.part/user -1000002]]
+
+ ;; Tricks
+ {:db/id #db/id[:db.part/user -5000001]
+  :video/_trick #db/id[:db.part/user -4000001]
+  :trick/title "Trick One"
+  :trick/start 3000}
+
+]
