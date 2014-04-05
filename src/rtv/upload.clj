@@ -1,5 +1,5 @@
 (ns rtv.upload
-  (:require [ring.util.response :as ring-resp]
+  (:require [ring.util.response :refer [response redirect]]
             [cemerick.friend :as friend]
             [clj-time.core :as time]
             [rtv.transcoder :as transcoder]
@@ -14,9 +14,8 @@
          "/" s3-object-name)))
 
 (defn s3-put-sign
-  "Request spec for this ring handler:
-   - params: :s3_object_name, :s3_object_type.
-   - conf: :s3-bucket-name, :s3-url, :s3-secret-key, :s3-access-key."
+  "Request params: :s3_object_name, :s3_object_type.
+   conf: :s3-bucket-name, :s3-url, :s3-secret-key, :s3-access-key."
   [{params :params conf :aws}]
   (let [expires (-> 100 time/seconds time/from-now)
         raw (string-to-sign (:s3-bucket-name conf)
@@ -25,7 +24,7 @@
                             expires)
         sig (util/b64-encode-string
              (util/hex-hmac-sha1 (:s3-secret-key conf) raw))]
-    (ring-resp/response
+    (response
      {:signed_request (str (:s3-url conf) "/"
                            (:s3-bucket-name conf) "/"
                            (:s3_object_name params)
@@ -37,9 +36,8 @@
                 (:s3_object_type params))})))
 
 (defn s3-put-done
-  "Request spec for this ring handler:
-   - params: :result_url"
+  "Request params: :result_url"
   [{params :params :as req}]
   (let [user (friend/current-authentication req)
         url (transcoder/start-task (:identity user) (:result_url params))]
-    (ring-resp/redirect url)))
+    (redirect url)))

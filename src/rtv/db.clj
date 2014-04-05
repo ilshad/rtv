@@ -99,8 +99,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn all-users [db]
-  (d/q '[:find ?c
-         :in $
-         :where
-         [?c :person/email]]
-       (d/db (:conn db))))
+  (d/q '[:find ?c :in $ :where [?c :person/email]] (d/db (:conn db))))
+
+(defn all-videos [db]
+  (d/q '[:find ?c :in $ :where [?c :video/uri]] (d/db (:conn db))))

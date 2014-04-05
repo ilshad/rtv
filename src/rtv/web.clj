@@ -11,6 +11,7 @@
             [rtv.frontend-config :as frontend-config]
             [rtv.facebook :as facebook]
             [rtv.upload :as upload]
+            [rtv.video :as video]
             [rtv.auth :as auth]))
 
 (defroutes routes
@@ -18,6 +19,7 @@
   (GET "/api/frontend-config" req (frontend-config/handler req))
   (GET "/api/s3-put-sign" req (upload/s3-put-sign req))
   (GET "/api/s3-put-done" req (upload/s3-put-done req))
+  (GET "/api/video/:id" req (video/info req))
   (route/not-found "Page not found"))
 
 (defn- wrap-components [handler db facebook aws]

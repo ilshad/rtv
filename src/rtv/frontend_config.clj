@@ -1,7 +1,6 @@
 (ns rtv.frontend-config
-  (:require [ring.util.response :as response]))
+  (:require [ring.util.response :refer [response]]))
 
 (defn handler [req]
-  (response/response
-   {:facebook-app-id (-> req :facebook :client-id)
-    }))
+  (response
+   {:facebook-app-id (-> req :facebook :client-id)}))

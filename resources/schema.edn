@@ -36,6 +36,13 @@
   :db/doc "Login (by Facebook, Twitter, etc)."
   :db.install/_attribute :db.part/db}
 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :person/following
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Follow someone - ref to that person"
+  :db.install/_attribute :db.part/db}
+
  ;; Role
  {:db/id #db/id[:db.part/user] :db/ident :person.role/member}
 
