@@ -95,6 +95,27 @@
                                   :person/login login-entity-id}])
         (tx-entity id))))
 
+(defn add-trick [db video-id title start]
+  (let [id (d/tempid :db.part/user)]
+    @(d/transact (:conn db) [[:db/add video-id :video/trick id]
+                             [:db/add id :trick/title title]
+                             [:db/add id :trick/start start]])))
+
+(defn find-trick [db video-id start]
+  (d/q '[:find ?trick-id
+         :in $ ?video-id ?start
+         :where
+         [?video-id :video/trick ?trick-id]
+         [?trick-id :trick/start ?start]]
+       (-> db :conn d/db)
+       video-id
+       start))
+
+(defn del-trick [db video-id start]
+  (doseq [trick (find-trick db video-id start)]
+    @(d/transact (:conn db) [[:db/retract video-id
+                              :video/trick (first trick)]])))
+
 ;; These functions are used in debug only
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -103,3 +124,4 @@
 
 (defn all-videos [db]
   (d/q '[:find ?c :in $ :where [?c :video/uri]] (d/db (:conn db))))
+

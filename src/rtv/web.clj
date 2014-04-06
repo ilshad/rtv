@@ -1,7 +1,7 @@
 (ns rtv.web
   (:require [compojure.route :as route]
             [compojure.handler :refer [site]]
-            [compojure.core :refer [defroutes GET POST ANY]]
+            [compojure.core :refer [defroutes GET POST PUT DELETE]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.json :as ring-json]
@@ -20,6 +20,8 @@
   (GET "/api/s3-put-sign" req (upload/s3-put-sign req))
   (GET "/api/s3-put-done" req (upload/s3-put-done req))
   (GET "/api/video/:id" req (video/info req))
+  (PUT "/api/video/:id/tricks/:start" req (video/put-trick req))
+  (DELETE "/api/video/:id/tricks/:start" req (video/delete-trick req))
   (route/not-found "Page not found"))
 
 (defn- wrap-components [handler db facebook aws]

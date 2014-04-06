@@ -1,7 +1,8 @@
 (ns rtv.video
   (:require [clojure.edn :as edn]
             [datomic.api :as d]
-            [ring.util.response :refer [response]]))
+            [ring.util.response :refer [response created]]
+            [rtv.db :as db]))
 
 (defn- person [e]
   {:title (str (:person/first-name e) " " (:person/last-name e))
@@ -11,18 +12,17 @@
    :userpic "/foo.jpg"})
 
 (defn- tricks [es]
-  (->>
-   (map (fn [e] {:title (:trick/title e) :start (:trick/start e)})
-        es)
-   (sort-by :start)
-   vec))
+  (->> (map (fn [e] {:title (:trick/title e)
+                     :start (:trick/start e)})
+            es)
+       (sort-by :start)
+       vec))
 
 (defn info
   "Request params: id"
-  [req]
-  (let [dbv (d/db (-> req :db :conn))
-        eid (edn/read-string (-> req :params :id))
-        e (d/entity dbv eid)]
+  [{{id :id} :params {conn :conn} :db}]
+  (let [dbv (d/db conn)
+        e (d/entity dbv (edn/read-string id))]
     (response
      {:uri (:video/uri e)
       :created (str (:video/created e))
@@ -33,3 +33,21 @@
       :owner (person (:video/owner e))
       :tricks (tricks (:video/trick e))})))
 
+(defn put-trick
+  "Request params: id (video's id), title, start"
+  [{{:keys [id start title]} :params db :db}]
+  (db/add-trick db
+                (edn/read-string id)
+                title
+                (edn/read-string start))
+  (created (str "/api/video/" id "/tricks/" start)))
+
+(defn delete-trick
+  "Request params: id (video's id), start"
+  [{{:keys [id start]} :params db :db}]
+  (db/del-trick db
+                (edn/read-string id)
+                (edn/read-string start))
+  {:status 204
+   :headers {}
+   :body ""})
