@@ -1,12 +1,12 @@
-# DOCS
+# ...
 ## Frontend API
-### GET /api/front/conf
-### GET /api/front/s3-put-sign
-### GET /api/front/s3-put-done
-### GET /api/front/video/{id}
-### PUT /api/front/video/{id}/tricks/{start}
-### DELETE /api/front/video/{id}/tricks/{start}
-## POST /api/front/facebook/connect
+#### GET /api/front/conf
+#### GET /api/front/s3-put-sign
+#### GET /api/front/s3-put-done
+#### GET /api/front/video/{id}
+#### PUT /api/front/video/{id}/tricks/{start}
+#### DELETE /api/front/video/{id}/tricks/{start}
+#### POST /api/front/facebook/connect
 
 Отдать токен доступа и фейсбуковский идентификатор пользователя.
 
