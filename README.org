@@ -1,3 +1,0 @@
-* Contents
-- [[file:doc/api.org][API]]
-  

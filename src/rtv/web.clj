@@ -8,20 +8,20 @@
             [ring.adapter.jetty :refer [run-jetty]]
             [com.stuartsierra.component :as c]
             [cemerick.friend :as friend]
-            [rtv.frontend-config :as frontend-config]
             [rtv.facebook :as facebook]
             [rtv.upload :as upload]
             [rtv.video :as video]
-            [rtv.auth :as auth]))
+            [rtv.auth :as auth]
+            [rtv.conf :as conf]))
 
 (defroutes routes
   (GET "/" req (str (-> req :db :uri)))
-  (GET "/api/frontend-config" req (frontend-config/handler req))
-  (GET "/api/s3-put-sign" req (upload/s3-put-sign req))
-  (GET "/api/s3-put-done" req (upload/s3-put-done req))
-  (GET "/api/video/:id" req (video/info req))
-  (PUT "/api/video/:id/tricks/:start" req (video/put-trick req))
-  (DELETE "/api/video/:id/tricks/:start" req (video/delete-trick req))
+  (GET "/api/front/conf" req (conf/handler req))
+  (GET "/api/front/s3-put-sign" req (upload/s3-put-sign req))
+  (GET "/api/front/s3-put-done" req (upload/s3-put-done req))
+  (GET "/api/front/video/:id" req (video/info req))
+  (PUT "/api/front/video/:id/tricks/:start" req (video/put-trick req))
+  (DELETE "/api/front/video/:id/tricks/:start" req (video/delete-trick req))
   (route/not-found "Page not found"))
 
 (defn- wrap-components [handler db facebook aws]

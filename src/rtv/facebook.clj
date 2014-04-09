@@ -4,7 +4,7 @@
             [cheshire.core :as cheshire]))
 
 (defn- connect-request? [req]
-  (and (= "/api/facebook/connect" (request/path-info req))
+  (and (= "/api/front/facebook/connect" (request/path-info req))
        (= :post (:request-method req))))
 
 (def fb-fields "first_name,last_name,picture,email,link,locale")

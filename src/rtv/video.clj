@@ -40,7 +40,7 @@
                 (edn/read-string id)
                 title
                 (edn/read-string start))
-  (created (str "/api/video/" id "/tricks/" start)))
+  (created (str "/api/front/video/" id "/tricks/" start)))
 
 (defn delete-trick
   "Request params: id (video's id), start"

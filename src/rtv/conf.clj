@@ -1,4 +1,4 @@
-(ns rtv.frontend-config
+(ns rtv.conf
   (:require [ring.util.response :refer [response]]))
 
 (defn handler [req]
